@@ -21,6 +21,9 @@ jobs:
           test -f .extraccion/ViviendaSeg_Cloudflare_GitHub/functions/api/evaluate.js
           cp -a .extraccion/ViviendaSeg_Cloudflare_GitHub/. .
           rm -rf .extraccion
+          # La aplicación conectada no puede modificar archivos de workflow.
+          # Conservamos este flujo de extracción, sin añadir otro workflow desde el ZIP.
+          rm -f .github/workflows/test.yml
       - name: Verificar motor JavaScript
         run: npm test
       - name: Guardar archivos extraídos
