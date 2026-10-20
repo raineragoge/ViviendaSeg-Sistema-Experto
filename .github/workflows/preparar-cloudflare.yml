@@ -1,0 +1,36 @@
+name: Preparar ViviendaSeg para Cloudflare
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/preparar-cloudflare.yml"
+permissions:
+  contents: write
+jobs:
+  preparar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extraer versión 1.2 en la raíz del repositorio
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .extraccion
+          unzip -q ViviendaSeg_v1_1/ViviendaSeg_Cloudflare_GitHub_v1_2.zip -d .extraccion
+          test -f .extraccion/ViviendaSeg_Cloudflare_GitHub/public/index.html
+          test -f .extraccion/ViviendaSeg_Cloudflare_GitHub/functions/api/evaluate.js
+          cp -a .extraccion/ViviendaSeg_Cloudflare_GitHub/. .
+          rm -rf .extraccion
+      - name: Verificar motor JavaScript
+        run: npm test
+      - name: Guardar archivos extraídos
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if ! git diff --cached --quiet; then
+            git commit -m "Añadir estructura compatible con Cloudflare Pages"
+            git push origin HEAD:main
+          fi
