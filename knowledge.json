@@ -1,0 +1,822 @@
+{
+  "version": "1.1.0",
+  "model_name": "ViviendaSeg — Evaluación orientativa mediante reglas",
+  "disclaimer": "Prototipo académico. Las clasificaciones no son criterios actuariales, diagnósticos técnicos ni decisiones de aseguramiento.",
+  "questions": [
+    {
+      "id": "uso",
+      "section": "Construcción",
+      "label": "¿Cuál es el uso actual de la vivienda?",
+      "help": "Solo se admiten viviendas propias de uso residencial, incluidas segundas residencias y viviendas desocupadas.",
+      "type": "choice",
+      "required_for_confidence": true,
+      "options": [
+        [
+          "habitual",
+          "Vivienda habitual"
+        ],
+        [
+          "segunda",
+          "Segunda residencia"
+        ],
+        [
+          "desocupada",
+          "Vivienda propia desocupada"
+        ],
+        [
+          "alquilada",
+          "Vivienda destinada al alquiler"
+        ],
+        [
+          "no_residencial",
+          "Oficina, local u otro uso"
+        ]
+      ]
+    },
+    {
+      "id": "anio",
+      "section": "Construcción",
+      "label": "¿En qué año se construyó aproximadamente?",
+      "help": "La fecha orienta las preguntas sobre reformas, pero nunca determina por sí sola el nivel de riesgo.",
+      "type": "year",
+      "required_for_confidence": true
+    },
+    {
+      "id": "estructura",
+      "section": "Construcción",
+      "label": "¿Cuál es el material de la estructura principal?",
+      "help": "No se trata del material de los muebles o de los revestimientos. La clasificación de madera es una simplificación académica.",
+      "type": "choice",
+      "required_for_confidence": true,
+      "options": [
+        [
+          "hormigon",
+          "Hormigón"
+        ],
+        [
+          "fabrica",
+          "Ladrillo / fábrica estructural"
+        ],
+        [
+          "acero",
+          "Acero"
+        ],
+        [
+          "madera",
+          "Madera"
+        ],
+        [
+          "mixta",
+          "Estructura mixta"
+        ],
+        [
+          "unknown",
+          "No lo sé"
+        ]
+      ]
+    },
+    {
+      "id": "material_mixto",
+      "section": "Construcción",
+      "label": "¿La estructura mixta contiene madera como elemento principal?",
+      "help": "Se pregunta solo en estructuras mixtas.",
+      "type": "choice",
+      "required_for_confidence": true,
+      "show_if": {
+        "field": "estructura",
+        "eq": "mixta"
+      },
+      "options": [
+        [
+          "si",
+          "Sí"
+        ],
+        [
+          "no",
+          "No"
+        ],
+        [
+          "unknown",
+          "No lo sé"
+        ]
+      ]
+    },
+    {
+      "id": "proteccion_madera",
+      "section": "Construcción",
+      "label": "¿Conoces las medidas de protección contra incendios de los elementos estructurales de madera?",
+      "help": "Ejemplos: revestimientos adecuados o soluciones constructivas previstas en el proyecto. Su presencia declarada no acredita por sí misma la resistencia al fuego de la estructura.",
+      "type": "choice",
+      "required_for_confidence": true,
+      "show_if": {
+        "any": [
+          {
+            "field": "estructura",
+            "eq": "madera"
+          },
+          {
+            "all": [
+              {
+                "field": "estructura",
+                "eq": "mixta"
+              },
+              {
+                "field": "material_mixto",
+                "eq": "si"
+              }
+            ]
+          }
+        ]
+      },
+      "options": [
+        [
+          "si",
+          "Sí, conozco protecciones instaladas"
+        ],
+        [
+          "no",
+          "No, confirmo que no existen protecciones específicas instaladas"
+        ],
+        [
+          "unknown",
+          "No lo sé"
+        ]
+      ]
+    },
+    {
+      "id": "informe_madera",
+      "section": "Construcción",
+      "label": "¿Qué documentación técnica tienes sobre la resistencia al fuego de la estructura de madera?",
+      "help": "Se considera documentación técnica un proyecto, memoria justificativa o informe firmado por un profesional competente. Indica únicamente lo que puedas contrastar: el sistema no comprueba los documentos.",
+      "type": "choice",
+      "required_for_confidence": true,
+      "uncertain_values": [
+        "unknown",
+        "sin_informe"
+      ],
+      "show_if": {
+        "any": [
+          {
+            "field": "estructura",
+            "eq": "madera"
+          },
+          {
+            "all": [
+              {
+                "field": "estructura",
+                "eq": "mixta"
+              },
+              {
+                "field": "material_mixto",
+                "eq": "si"
+              }
+            ]
+          }
+        ]
+      },
+      "options": [
+        [
+          "favorable",
+          "Dispongo de documentación técnica favorable"
+        ],
+        [
+          "desfavorable",
+          "Un informe técnico identifica deficiencias"
+        ],
+        [
+          "sin_informe",
+          "No dispongo de documentación técnica"
+        ],
+        [
+          "unknown",
+          "No lo sé"
+        ]
+      ]
+    },
+    {
+      "id": "reforma",
+      "section": "Construcción",
+      "label": "¿Se han realizado reformas de instalaciones desde la construcción?",
+      "help": "Esta pregunta se activa para viviendas anteriores a 2006. No realizar una reforma no implica automáticamente un riesgo alto.",
+      "type": "choice",
+      "required_for_confidence": true,
+      "show_if": {
+        "field": "anio",
+        "lt": 2006
+      },
+      "options": [
+        [
+          "si",
+          "Sí"
+        ],
+        [
+          "no",
+          "No"
+        ],
+        [
+          "unknown",
+          "No lo sé"
+        ]
+      ]
+    },
+    {
+      "id": "electricidad",
+      "section": "Instalaciones",
+      "label": "¿Qué estado tiene la instalación eléctrica?",
+      "help": "Indica solo lo que conozcas. Una vivienda antigua puede tener una instalación correctamente renovada.",
+      "type": "choice",
+      "required_for_confidence": true,
+      "options": [
+        [
+          "revisada",
+          "Revisada, sin defectos conocidos"
+        ],
+        [
+          "sin_revision",
+          "Sin revisión reciente"
+        ],
+        [
+          "defectuosa",
+          "Con defectos conocidos"
+        ],
+        [
+          "unknown",
+          "No lo sé"
+        ]
+      ]
+    },
+    {
+      "id": "calefaccion",
+      "section": "Instalaciones",
+      "label": "¿Qué sistema de calefacción utiliza?",
+      "help": "El sistema formulará una pregunta específica si hay gas o chimenea.",
+      "type": "choice",
+      "required_for_confidence": true,
+      "options": [
+        [
+          "electrica",
+          "Eléctrico"
+        ],
+        [
+          "gas",
+          "Gas"
+        ],
+        [
+          "combustion",
+          "Leña, pellets o chimenea"
+        ],
+        [
+          "otra",
+          "Otro"
+        ],
+        [
+          "ninguna",
+          "Ninguno"
+        ],
+        [
+          "unknown",
+          "No lo sé"
+        ]
+      ]
+    },
+    {
+      "id": "caldera",
+      "section": "Instalaciones",
+      "label": "¿En qué estado está la instalación o caldera de gas?",
+      "help": "Si sospechas una fuga, abandona la zona y contacta con emergencias desde un lugar seguro.",
+      "type": "choice",
+      "required_for_confidence": true,
+      "show_if": {
+        "field": "calefaccion",
+        "eq": "gas"
+      },
+      "options": [
+        [
+          "revisada",
+          "Mantenimiento al día, sin problemas conocidos"
+        ],
+        [
+          "pendiente",
+          "Mantenimiento pendiente"
+        ],
+        [
+          "fuga",
+          "Fuga conocida o sospechada"
+        ],
+        [
+          "unknown",
+          "No lo sé"
+        ]
+      ]
+    },
+    {
+      "id": "chimenea",
+      "section": "Instalaciones",
+      "label": "¿Se realiza mantenimiento de la chimenea o estufa de combustión?",
+      "help": "Esta pregunta aparece cuando se utiliza leña, pellets o chimenea.",
+      "type": "choice",
+      "required_for_confidence": true,
+      "show_if": {
+        "field": "calefaccion",
+        "eq": "combustion"
+      },
+      "options": [
+        [
+          "al_dia",
+          "Sí, regularmente"
+        ],
+        [
+          "pendiente",
+          "No, está pendiente"
+        ],
+        [
+          "unknown",
+          "No lo sé"
+        ]
+      ]
+    },
+    {
+      "id": "detectores",
+      "section": "Protección",
+      "label": "¿La vivienda tiene detectores de humo?",
+      "help": "Su ausencia permite recomendar una mejora; junto con combustión activa una regla de riesgo medio en este prototipo.",
+      "type": "choice",
+      "required_for_confidence": true,
+      "options": [
+        [
+          "si",
+          "Sí"
+        ],
+        [
+          "no",
+          "No"
+        ],
+        [
+          "unknown",
+          "No lo sé"
+        ]
+      ]
+    },
+    {
+      "id": "humedades",
+      "section": "Conservación",
+      "label": "¿Hay humedades o filtraciones importantes?",
+      "help": "Distingue las manchas leves de daños persistentes con posible impacto en la vivienda.",
+      "type": "choice",
+      "required_for_confidence": true,
+      "options": [
+        [
+          "no",
+          "No"
+        ],
+        [
+          "leves",
+          "Señales leves"
+        ],
+        [
+          "graves",
+          "Sí, importantes o persistentes"
+        ],
+        [
+          "unknown",
+          "No lo sé"
+        ]
+      ]
+    },
+    {
+      "id": "agua",
+      "section": "Conservación",
+      "label": "¿Hay fugas de agua activas en la vivienda?",
+      "help": "Una fuga activa requiere revisar y reparar la instalación, especialmente cerca de elementos eléctricos.",
+      "type": "choice",
+      "required_for_confidence": true,
+      "options": [
+        [
+          "no",
+          "No"
+        ],
+        [
+          "si",
+          "Sí"
+        ],
+        [
+          "unknown",
+          "No lo sé"
+        ]
+      ]
+    },
+    {
+      "id": "estructura_estado",
+      "section": "Conservación",
+      "label": "¿Observas daños estructurales significativos?",
+      "help": "Ejemplos: deformaciones relevantes, grietas importantes o desprendimientos. No sustituyen un informe técnico.",
+      "type": "choice",
+      "required_for_confidence": true,
+      "options": [
+        [
+          "bien",
+          "No"
+        ],
+        [
+          "menores",
+          "Fisuras o desperfectos superficiales"
+        ],
+        [
+          "graves",
+          "Daños significativos o inestabilidad sospechada"
+        ],
+        [
+          "unknown",
+          "No lo sé"
+        ]
+      ]
+    },
+    {
+      "id": "conservacion",
+      "section": "Conservación",
+      "label": "¿Cómo describirías el mantenimiento general de la vivienda?",
+      "help": "El deterioro no se mide por antigüedad solamente.",
+      "type": "choice",
+      "required_for_confidence": true,
+      "options": [
+        [
+          "bueno",
+          "Buen estado"
+        ],
+        [
+          "pendiente",
+          "Reparaciones importantes pendientes"
+        ],
+        [
+          "unknown",
+          "No lo sé"
+        ]
+      ]
+    },
+    {
+      "id": "desocupacion",
+      "section": "Ocupación y entorno",
+      "label": "¿Pasa largos periodos sin supervisión u ocupación?",
+      "help": "Una vivienda de uso habitual puede quedar desocupada durante periodos largos.",
+      "type": "choice",
+      "required_for_confidence": true,
+      "options": [
+        [
+          "no",
+          "No"
+        ],
+        [
+          "si",
+          "Sí"
+        ],
+        [
+          "unknown",
+          "No lo sé"
+        ]
+      ]
+    },
+    {
+      "id": "seguridad",
+      "section": "Ocupación y entorno",
+      "label": "¿Qué medidas básicas de seguridad frente a intrusiones tiene?",
+      "help": "La ausencia de medidas no implica automáticamente riesgo alto.",
+      "type": "choice",
+      "required_for_confidence": true,
+      "options": [
+        [
+          "ambas",
+          "Alarma y puerta reforzada"
+        ],
+        [
+          "alarma",
+          "Alarma"
+        ],
+        [
+          "puerta",
+          "Puerta reforzada"
+        ],
+        [
+          "ninguna",
+          "Ninguna de esas"
+        ],
+        [
+          "unknown",
+          "No lo sé"
+        ]
+      ]
+    },
+    {
+      "id": "inundaciones",
+      "section": "Ocupación y entorno",
+      "label": "¿Conoces antecedentes de inundaciones que hayan afectado a la vivienda?",
+      "help": "No se deduce el riesgo geográfico de esta respuesta. Una futura integración podría consultar mapas oficiales.",
+      "type": "choice",
+      "required_for_confidence": true,
+      "options": [
+        [
+          "no",
+          "No"
+        ],
+        [
+          "si",
+          "Sí"
+        ],
+        [
+          "unknown",
+          "No lo sé"
+        ]
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "id": "R01",
+      "tier": "alto",
+      "conditions": [
+        {
+          "field": "estructura",
+          "eq": "madera"
+        },
+        {
+          "field": "informe_madera",
+          "eq": "desfavorable"
+        }
+      ],
+      "reason": "En una estructura principal de madera se declara un informe técnico desfavorable sobre su resistencia al fuego.",
+      "recommendation": "Solicitar un proyecto de corrección y comprobación de la resistencia al fuego a un técnico competente. No interpretar el cuestionario como evaluación pericial.",
+      "category": "Construcción"
+    },
+    {
+      "id": "R02",
+      "tier": "alto",
+      "conditions": [
+        {
+          "field": "estructura",
+          "eq": "mixta"
+        },
+        {
+          "field": "material_mixto",
+          "eq": "si"
+        },
+        {
+          "field": "informe_madera",
+          "eq": "desfavorable"
+        }
+      ],
+      "reason": "En una estructura mixta con madera principal se declara un informe técnico desfavorable sobre la resistencia al fuego.",
+      "recommendation": "Solicitar evaluación y medidas correctoras de la parte estructural de madera a un técnico competente.",
+      "category": "Construcción"
+    },
+    {
+      "id": "R03",
+      "tier": "alto",
+      "conditions": [
+        {
+          "field": "electricidad",
+          "eq": "defectuosa"
+        }
+      ],
+      "reason": "Se han comunicado defectos conocidos en la instalación eléctrica.",
+      "recommendation": "Solicitar revisión y reparación por una empresa instaladora habilitada.",
+      "category": "Instalaciones"
+    },
+    {
+      "id": "R04",
+      "tier": "alto",
+      "conditions": [
+        {
+          "field": "calefaccion",
+          "eq": "gas"
+        },
+        {
+          "field": "caldera",
+          "eq": "fuga"
+        }
+      ],
+      "reason": "Se declara una posible fuga de gas.",
+      "recommendation": "Aléjate de la zona; desde un lugar seguro, llama al 112 o al servicio de emergencias correspondiente. Evita accionar interruptores y producir llamas.",
+      "category": "Instalaciones",
+      "urgent": true
+    },
+    {
+      "id": "R05",
+      "tier": "alto",
+      "conditions": [
+        {
+          "field": "estructura_estado",
+          "eq": "graves"
+        }
+      ],
+      "reason": "Se observan daños que podrían afectar a la estabilidad estructural.",
+      "recommendation": "Evitar exponerse a zonas inseguras y solicitar inspección urgente de un técnico competente.",
+      "category": "Conservación",
+      "urgent": true
+    },
+    {
+      "id": "R06",
+      "tier": "medio",
+      "conditions": [
+        {
+          "field": "electricidad",
+          "eq": "sin_revision"
+        }
+      ],
+      "reason": "La instalación eléctrica no cuenta con revisión reciente declarada.",
+      "recommendation": "Programar una revisión del estado de la instalación.",
+      "category": "Instalaciones"
+    },
+    {
+      "id": "R07",
+      "tier": "medio",
+      "conditions": [
+        {
+          "field": "calefaccion",
+          "eq": "gas"
+        },
+        {
+          "field": "caldera",
+          "eq": "pendiente"
+        }
+      ],
+      "reason": "El mantenimiento del sistema de gas está pendiente.",
+      "recommendation": "Concertar la revisión que corresponda con personal habilitado.",
+      "category": "Instalaciones"
+    },
+    {
+      "id": "R08",
+      "tier": "medio",
+      "conditions": [
+        {
+          "field": "calefaccion",
+          "eq": "combustion"
+        },
+        {
+          "field": "chimenea",
+          "eq": "pendiente"
+        }
+      ],
+      "reason": "La chimenea o estufa de combustión no tiene mantenimiento al día.",
+      "recommendation": "Revisar y limpiar la instalación antes de su uso.",
+      "category": "Instalaciones"
+    },
+    {
+      "id": "R09",
+      "tier": "medio",
+      "conditions": [
+        {
+          "field": "calefaccion",
+          "eq": "combustion"
+        },
+        {
+          "field": "detectores",
+          "eq": "no"
+        }
+      ],
+      "reason": "Se utiliza calefacción de combustión sin detectores de humo declarados.",
+      "recommendation": "Instalar detectores adecuados y comprobar periódicamente su funcionamiento.",
+      "category": "Protección"
+    },
+    {
+      "id": "R10",
+      "tier": "medio",
+      "conditions": [
+        {
+          "field": "humedades",
+          "eq": "graves"
+        }
+      ],
+      "reason": "Se indican filtraciones o humedades importantes.",
+      "recommendation": "Identificar el origen y corregir la entrada de humedad o agua.",
+      "category": "Conservación"
+    },
+    {
+      "id": "R11",
+      "tier": "medio",
+      "conditions": [
+        {
+          "field": "agua",
+          "eq": "si"
+        }
+      ],
+      "reason": "Existe una fuga de agua activa.",
+      "recommendation": "Reparar la fuga y evaluar posibles daños derivados.",
+      "category": "Conservación"
+    },
+    {
+      "id": "R12",
+      "tier": "medio",
+      "conditions": [
+        {
+          "field": "conservacion",
+          "eq": "pendiente"
+        }
+      ],
+      "reason": "Existen reparaciones importantes pendientes de realizar.",
+      "recommendation": "Priorizar mantenimiento preventivo y reparar los daños documentados.",
+      "category": "Conservación"
+    },
+    {
+      "id": "R13",
+      "tier": "medio",
+      "conditions": [
+        {
+          "field": "desocupacion",
+          "eq": "si"
+        }
+      ],
+      "reason": "La vivienda permanece largos periodos sin supervisión.",
+      "recommendation": "Organizar inspecciones periódicas, control de suministros y medidas preventivas.",
+      "category": "Ocupación"
+    },
+    {
+      "id": "R14",
+      "tier": "medio",
+      "conditions": [
+        {
+          "field": "desocupacion",
+          "eq": "si"
+        },
+        {
+          "field": "seguridad",
+          "eq": "ninguna"
+        }
+      ],
+      "reason": "La desocupación prolongada se combina con falta de medidas básicas contra intrusiones.",
+      "recommendation": "Valorar una puerta reforzada u otras medidas de protección adaptadas al inmueble.",
+      "category": "Ocupación"
+    },
+    {
+      "id": "R15",
+      "tier": "medio",
+      "conditions": [
+        {
+          "field": "inundaciones",
+          "eq": "si"
+        }
+      ],
+      "reason": "Se declaran antecedentes de inundación en el inmueble.",
+      "recommendation": "Solicitar revisión de daños anteriores y consultar la cartografía oficial de peligrosidad por inundación.",
+      "category": "Entorno"
+    },
+    {
+      "id": "R16",
+      "tier": "medio",
+      "conditions": [
+        {
+          "field": "proteccion_madera",
+          "eq": "no"
+        },
+        {
+          "field": "informe_madera",
+          "in": [
+            "sin_informe",
+            "unknown"
+          ]
+        }
+      ],
+      "reason": "No se declaran protecciones estructurales frente al fuego y no consta una evaluación técnica favorable. Es una señal preventiva, no prueba de incumplimiento.",
+      "recommendation": "Consultar la documentación del proyecto y encargar una revisión técnica de la resistencia al fuego; la madera expuesta puede cumplir requisitos sin revestimientos adicionales.",
+      "category": "Construcción"
+    }
+  ],
+  "general_recommendations": [
+    {
+      "field": "detectores",
+      "equals": "no",
+      "text": "Valorar la instalación de detectores de humo adecuados aunque no se haya activado una regla de riesgo medio."
+    },
+    {
+      "field": "anio",
+      "equals": "unknown",
+      "text": "Localizar documentación técnica o catastral para determinar el año aproximado de construcción."
+    },
+    {
+      "field": "informe_madera",
+      "equals": "sin_informe",
+      "text": "Buscar proyecto, memoria técnica o informe de resistencia al fuego de los elementos de madera; si no existe, consultar con un técnico competente."
+    },
+    {
+      "field": "informe_madera",
+      "equals": "unknown",
+      "text": "Averiguar si el proyecto o la comunidad de propietarios dispone de documentación de resistencia al fuego de la estructura."
+    }
+  ],
+  "references": [
+    {
+      "label": "Real Decreto 314/2006: Código Técnico de la Edificación (BOE)",
+      "url": "https://www.boe.es/eli/es/rd/2006/03/17/314/con"
+    },
+    {
+      "label": "Documento Básico DB-SI: Seguridad en caso de incendio",
+      "url": "https://www.codigotecnico.org/DocumentosCTE/SeguridadEnCasoDeIncendio.html"
+    },
+    {
+      "label": "Recomendaciones del Ayuntamiento de Donostia en emergencias",
+      "url": "https://www.donostia.eus/es/seguridad-ciudadana-emergencias/emergencias/consejos-recomendaciones"
+    },
+    {
+      "label": "CTE, DB-SI, anejo SI E: resistencia al fuego de estructuras de madera",
+      "url": "https://www.codigotecnico.org/DocumentosCTE/SeguridadEnCasoDeIncendio.html"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "viviendaseg-sistema-experto",
+  "version": "1.2.0",
+  "private": true,
+  "type": "module",
+  "description": "Sistema experto académico de evaluación orientativa de riesgos de viviendas",
+  "scripts": {
+    "test": "node --test tests/test_cloudflare.mjs",
+    "test:parity": "python scripts/test_parity.py",
+    "dev": "npx wrangler pages dev public",
+    "deploy": "npx wrangler pages deploy public"
+  }
+}
