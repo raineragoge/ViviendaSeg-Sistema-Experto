@@ -1,0 +1,18 @@
+{
+  "uso": "habitual",
+  "anio": 1985,
+  "estructura": "madera",
+  "reforma": "si",
+  "electricidad": "revisada",
+  "calefaccion": "electrica",
+  "detectores": "no",
+  "humedades": "no",
+  "agua": "no",
+  "estructura_estado": "bien",
+  "conservacion": "bueno",
+  "desocupacion": "no",
+  "seguridad": "ambas",
+  "inundaciones": "no",
+  "proteccion_madera": "no",
+  "informe_madera": "desfavorable"
+}

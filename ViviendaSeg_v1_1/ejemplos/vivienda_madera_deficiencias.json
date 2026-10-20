@@ -1,0 +1,17 @@
+{
+  "uso": "habitual",
+  "anio": 2018,
+  "estructura": "madera",
+  "electricidad": "revisada",
+  "calefaccion": "electrica",
+  "detectores": "si",
+  "humedades": "no",
+  "agua": "no",
+  "estructura_estado": "bien",
+  "conservacion": "bueno",
+  "desocupacion": "no",
+  "seguridad": "ambas",
+  "inundaciones": "no",
+  "proteccion_madera": "no",
+  "informe_madera": "desfavorable"
+}

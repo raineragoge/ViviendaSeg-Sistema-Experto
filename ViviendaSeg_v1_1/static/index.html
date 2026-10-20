@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#f5f7f8">
+  <meta name="description" content="Prototipo académico de sistema experto para la evaluación orientativa de riesgos de viviendas mediante reglas jerárquicas.">
+  <title>ViviendaSeg · Sistema experto</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/main.js" defer></script>
+</head>
+<body>
+  <header class="masthead">
+    <div class="brand" role="banner"><span class="brand-icon" aria-hidden="true">⌂</span><div><strong>ViviendaSeg</strong><small>SISTEMA EXPERTO · V1.1</small></div></div>
+    <span class="header-status"><span class="status-dot"></span> Motor de reglas · Local</span>
+  </header>
+  <main class="page">
+    <div class="topbar"><span class="eyebrow">HERRAMIENTA DE EVALUACIÓN ORIENTATIVA</span><span class="serial">MODELO V1.1 · OCT 2026</span></div>
+    <div class="intro"><div><h1>Evalúa el riesgo<br><em>de tu vivienda.</em></h1><p>Un sistema basado en conocimiento que analiza factores de construcción, instalaciones, conservación y ocupación. Cada conclusión incluye las reglas que la justifican.</p></div><div class="stamp" aria-hidden="true"><svg width="102" height="102" viewBox="0 0 102 102" fill="none"><rect x="8" y="8" width="86" height="86" rx="24" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 5"/><path d="M27 50L51 30L75 50V75H27V50Z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M44 75V56H58V75" stroke="currentColor" stroke-width="2.5"/><path d="M43 44H59" stroke="currentColor" stroke-width="2"/></svg></div></div>
+    <div class="notice" role="note"><span class="notice-icon" aria-hidden="true">i</span><span><strong>Uso académico.</strong> No sustituye una inspección profesional, un informe pericial ni una valoración real para contratar seguros. No se almacenan respuestas en el servidor.</span></div>
+    <div class="workspace">
+      <aside class="sidebar" aria-label="Estado de la evaluación">
+        <div class="side-top"><span class="side-label">TU EVALUACIÓN</span><span class="step-pill" id="sidebar-count">01 / 19</span></div>
+        <div class="progress-track"><span id="progress-fill"></span></div>
+        <nav id="sections" class="section-list" aria-label="Bloques del cuestionario"></nav>
+        <div class="side-divider"></div>
+        <div class="sidebar-meta"><span class="mini-title">EL SISTEMA UTILIZA</span><div><span class="bullet green"></span> 16 reglas de conocimiento</div><div><span class="bullet blue"></span> Prioridad jerárquica</div><div><span class="bullet amber"></span> Incertidumbre explícita</div><div><span class="bullet slate"></span> Explicaciones trazables</div></div>
+        <button type="button" class="reset-link" id="reset">↻ &nbsp;Reiniciar evaluación</button>
+      </aside>
+      <section class="main-panel" aria-labelledby="panel-title">
+        <div id="question-view">
+          <div class="panel-heading"><span class="pill" id="current-section">CONSTRUCCIÓN</span><span class="step-label" id="step-count">PREGUNTA 1 DE 19</span></div>
+          <div class="question-area"><span class="question-index" id="q-index">01 —</span><h2 id="panel-title"></h2><p class="question-help" id="question-help"></p><div id="active-alert" class="emergency hidden" role="alert"></div><div id="answers" role="group" aria-label="Opciones de respuesta"></div><div class="validation" id="validation" role="alert" aria-live="polite"></div></div>
+          <div class="panel-footer"><button id="back" type="button" class="btn secondary">← Anterior</button><span class="privacy">🔒 &nbsp;Evaluación local · sin registro</span><button id="next" type="button" class="btn primary">Continuar <span aria-hidden="true">→</span></button></div>
+        </div>
+        <div id="result-view" class="hidden" aria-live="polite">
+          <div class="panel-heading"><span class="pill">INFORME DE INFERENCIA</span><span class="step-label">FINALIZADO</span></div>
+          <div class="result-body"><span class="question-index">EVALUACIÓN —</span><h2 id="result-title">Resultado de tu vivienda</h2><p class="question-help">Conclusión generada aplicando reglas explícitas a tus respuestas.</p>
+            <div id="result-box" class="result-box"><span class="result-overline">NIVEL DE RIESGO ORIENTATIVO</span><div class="risk-line"><strong id="risk-label"></strong><span id="risk-state" class="risk-state"></span></div><p id="risk-description"></p></div>
+            <div id="emergency" class="emergency hidden"><strong>Atención prioritaria</strong><p>Has indicado una situación potencialmente urgente. Sigue las recomendaciones de seguridad y contacta con profesionales o emergencias según corresponda.</p></div>
+            <div id="missing-block" class="result-section hidden"><div class="section-heading"><span class="section-n">01</span><h3>Información pendiente</h3></div><p>Para mejorar la evaluación, revisa los datos siguientes:</p><ul id="missing-list"></ul></div>
+            <div id="rules-block" class="result-section"><div class="section-heading"><span class="section-n">02</span><h3>¿Qué reglas se han activado?</h3></div><div id="fired-rules"></div></div>
+            <div id="reco-block" class="result-section"><div class="section-heading"><span class="section-n">03</span><h3>Acciones recomendadas</h3></div><ul id="recommendations"></ul></div>
+            <div class="explain-box"><strong>¿Cómo funciona esta conclusión?</strong><p>El motor evalúa las condiciones declaradas; si encuentra algún factor alto, prevalece sobre el medio. Si no hay riesgo alto y faltan respuestas, el resultado es medio provisional. Solo marca riesgo bajo cuando las respuestas solicitadas están completas y no hay reglas activadas.</p></div>
+          </div>
+          <div class="panel-footer result-footer"><button id="edit-answers" type="button" class="btn secondary">← Revisar respuestas</button><div class="actions"><button id="print" type="button" class="btn secondary">Imprimir informe</button><button id="again" type="button" class="btn primary">Nueva evaluación ↗</button></div></div>
+        </div>
+      </section>
+    </div>
+    <div class="bottom-strip"><div><strong>16</strong><span>REGLAS DE INFERENCIA</span></div><div><strong>03</strong><span>NIVELES DE RIESGO</span></div><div><strong>05</strong><span>BLOQUES TEMÁTICOS</span></div><div><strong>100%</strong><span>EXPLICABLE · SIN IA GENERATIVA</span></div></div>
+    <section class="sample-section"><div><span class="eyebrow">PRUEBA EL PROTOTIPO</span><h3>Carga un escenario de ejemplo</h3><p>Los casos precargados facilitan comprobar las reglas. Puedes revisar y modificar sus respuestas.</p></div><div class="sample-actions"><button class="sample" data-scenario="bajo">Caso de riesgo bajo ↗</button><button class="sample" data-scenario="medio">Caso de riesgo medio ↗</button><button class="sample" data-scenario="alto">Caso de riesgo alto ↗</button><button class="sample" data-scenario="provisional">Datos desconocidos ↗</button></div></section>
+    <footer><span>ViviendaSeg · Trabajo académico de Sistemas Expertos</span><span>Base de conocimiento versionada · Sin identificación personal</span></footer>
+  </main>
+</body>
+</html>
