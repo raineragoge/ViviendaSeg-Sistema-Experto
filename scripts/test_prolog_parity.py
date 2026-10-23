@@ -36,7 +36,7 @@ CASOS = [
     {**BASE, "anio": 1980},
     {**BASE, "uso": "alquilada"},
     {**BASE, "uso": "no_residencial"},
-    {**BASE, "uso": "unknown"},
+    {"anio": 2018},  # Uso omitido: el validador Python no admite "unknown" en uso.
     {}
 ]
 
@@ -79,7 +79,14 @@ def main():
             "Falta SWI-Prolog. Instala https://www.swi-prolog.org/download/stable "
             "y confirma que 'swipl --version' funcione."
         )
-    normalizados = [validate_and_normalize(datos) for datos in CASOS]
+    normalizados = []
+    for indice, datos in enumerate(CASOS, 1):
+        try:
+            normalizados.append(validate_and_normalize(datos))
+        except ValueError as error:
+            print(f"CASO INVÁLIDO {indice}: {error}", flush=True)
+            print("Datos:", datos, flush=True)
+            raise SystemExit(1) from error
     proceso = subprocess.run(
         [exe, "-q", "-s", str(ROOT / "scripts" / "prolog_json.pl"),
          "-g", "main", "-t", "halt"],
