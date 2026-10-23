@@ -115,3 +115,36 @@ Se actualiza el archivo generado `functions/_shared/knowledge.js`. Subir ambos c
 - DB-SI (resistencia al fuego, madera): https://www.codigotecnico.org/DocumentosCTE/SeguridadEnCasoDeIncendio.html
 - Cloudflare Pages Functions: https://developers.cloudflare.com/pages/functions/get-started/
 - Git Integration: https://developers.cloudflare.com/pages/configuration/git-integration/
+
+
+## Validación real con SWI-Prolog (paso académico pendiente de ejecutar)
+
+Se han añadido un adaptador de entrada JSON y un conjunto de pruebas para
+comprobar **Prolog como motor de inferencia independiente de Python**. No se modifica
+la aplicación publicada: Cloudflare continúa utilizando JavaScript.
+
+1. Instala SWI-Prolog desde https://www.swi-prolog.org/download/stable
+   y abre PowerShell en la carpeta clonada del repositorio.
+2. Ejecuta:
+
+```powershell
+swipl --version
+swipl -q -s tests/test_rules.pl -g run_tests -t halt
+py scripts/test_prolog_parity.py
+```
+
+- `tests/test_rules.pl` prepara los hechos y comprueba 16 escenarios deterministas
+  directamente con reglas SI–ENTONCES.
+- `scripts/prolog_json.pl` es el puente local de JSON a hechos Prolog. El código
+  de prueba de Python normaliza las respuestas y elimina las ramas ocultas.
+- `scripts/test_prolog_parity.py` compara 514 escenarios entre los motores,
+  incluidos 500 casos reproducibles. Compara nivel, provisionalidad, reglas activadas y faltantes.
+- El código está preparado para ejecutarse; **no se declara validado hasta obtener
+  el resultado real de SWI-Prolog**. En el entorno de edición no estaba instalado.
+
+**Punto a revisar con el profesor:** una primera propuesta de pruebas decía
+«gas sin revisión conocida → alto». Las reglas actualmente implementadas en
+Python, JS y Prolog clasifican «mantenimiento pendiente» como medio y «no lo sé»
+como medio provisional; solo la fuga declarada activa alto (R04). No se ha
+modificado este criterio sin revisar el diseño. Del mismo modo, la regla
+antigua de «madera siempre alto» quedó sustituida por la comprobación documental.
