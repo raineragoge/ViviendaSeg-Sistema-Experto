@@ -35,7 +35,28 @@ Se han preparado:
 - `scripts/test_prolog_parity.py` — 514 escenarios de comparación Python–Prolog (14 dirigidos + 500 aleatorios reproducibles).
 - `notebooks/validacion_python_prolog.ipynb` — ejecución en Google Colab sin instalación local.
 
-**Estado:** PENDIENTE DE EJECUCIÓN. No se presentan los 514 escenarios como superados hasta obtener sus salidas reales. Las 16 pruebas manuales no equivalen a esas 16 pruebas automatizadas.
+**Estado: EJECUTADO Y SUPERADO EN GOOGLE COLAB (23/10/2026).**
+
+El estudiante ha compartido la salida completa de la segunda ejecución corregida:
+
+```text
+1/2 — Comprobando las 16 pruebas unitarias de Prolog
+DETALLE PROLOG:
+................
+Código de salida de las pruebas Prolog: 0
+
+2/2 — Comparando 514 escenarios Python–Prolog
+OK: paridad Python / Prolog comprobada en 514 escenarios
+ERRORES DEL COMPARADOR:
+(sin errores impresos)
+Código de salida del comparador: 0
+
+VALIDACIÓN PYTHON–PROLOG SUPERADA: 16 pruebas y 514 escenarios coincidentes.
+```
+
+**Interpretación:** las 16 pruebas unitarias de Prolog y los 514 casos de comparación Python–Prolog (14 dirigidos y 500 aleatorios reproducibles) han superado esta ejecución. Se ha comparado estado, nivel, provisionalidad, reglas activadas y datos pendientes. Son evidencias del prototipo educativo; no equivalen a una verificación formal de todos los casos posibles.
+
+**Incidencia resuelta:** la primera ejecución del comparador se detuvo antes de comparar porque un caso de prueba fijaba `uso="unknown"`, valor no admitido por el validador Python en ese campo. Se sustituyó por un caso con uso omitido y la segunda ejecución se completó sin diferencias. Esto fue un error en los datos de prueba y no demuestra un fallo de las reglas.
 
 ## Alcance y limitaciones
 
