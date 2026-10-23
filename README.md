@@ -117,6 +117,12 @@ Se actualiza el archivo generado `functions/_shared/knowledge.js`. Subir ambos c
 - Git Integration: https://developers.cloudflare.com/pages/configuration/git-integration/
 
 
+## Validación en Google Colab (sin instalar nada en Windows)
+
+[Ejecutar cuaderno de validación Python–Prolog](https://colab.research.google.com/github/raineragoge/ViviendaSeg-Sistema-Experto/blob/main/notebooks/validacion_python_prolog.ipynb). En Colab elegir **Entorno de ejecución → Ejecutar todas**. El cuaderno instala SWI-Prolog temporalmente en la nube y ejecuta las 16 pruebas unitarias y los 514 escenarios comparativos. **El resultado automático aún debe comprobarse.**
+
+Las 16 comprobaciones manuales realizadas en SWISH están documentadas en [Evidencias de validación Prolog](docs/VALIDACION_PROLOG_2026-10-23.md).
+
 ## Validación real con SWI-Prolog (paso académico pendiente de ejecutar)
 
 Se han añadido un adaptador de entrada JSON y un conjunto de pruebas para
