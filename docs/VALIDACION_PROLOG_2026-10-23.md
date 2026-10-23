@@ -9,7 +9,7 @@
 | N.º | Escenario | Resultado observado | Estado |
 |---:|---|---|---|
 | 1 | Madera desfavorable y electricidad defectuosa | Alto; R01, R03; faltantes permitidos | Coincide |
-| 2 | Uso destinado al alquiler | Estado `excluded` | Coincide, confirmado por estudiante |
+| 2 | Uso destinado al alquiler | Estado `excluded` | Coincide, confirmado manualmente |
 | 3 | Electricidad desconocida con datos incompletos | Medio provisional; electricidad pendiente | Coincide |
 | 4 | Vivienda completa sin riesgo | Bajo, no provisional, sin reglas | Coincide |
 | 5 | Electricidad sin revisión | Medio confirmado; R06 | Coincide |
