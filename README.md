@@ -119,11 +119,11 @@ Se actualiza el archivo generado `functions/_shared/knowledge.js`. Subir ambos c
 
 ## Validación en Google Colab (sin instalar nada en Windows)
 
-[Ejecutar cuaderno de validación Python–Prolog](https://colab.research.google.com/github/raineragoge/ViviendaSeg-Sistema-Experto/blob/main/notebooks/validacion_python_prolog.ipynb). En Colab elegir **Entorno de ejecución → Ejecutar todas**. El cuaderno instala SWI-Prolog temporalmente en la nube y ejecuta las 16 pruebas unitarias y los 514 escenarios comparativos. **El resultado automático aún debe comprobarse.**
+[Ejecutar cuaderno de validación Python–Prolog](https://colab.research.google.com/github/raineragoge/ViviendaSeg-Sistema-Experto/blob/main/notebooks/validacion_python_prolog.ipynb). En Colab elegir **Entorno de ejecución → Ejecutar todas**. El cuaderno instala SWI-Prolog temporalmente en la nube y ejecuta las 16 pruebas unitarias y los 514 escenarios comparativos. **Validación completada el 23/10/2026:** 16 pruebas unitarias Prolog y 514 comparaciones Python–Prolog superadas en Google Colab; salida comunicada por el estudiante y documentada en el registro de evidencias.
 
 Las 16 comprobaciones manuales realizadas en SWISH están documentadas en [Evidencias de validación Prolog](docs/VALIDACION_PROLOG_2026-10-23.md).
 
-## Validación real con SWI-Prolog (paso académico pendiente de ejecutar)
+## Validación real con SWI-Prolog (completada en Google Colab)
 
 Se han añadido un adaptador de entrada JSON y un conjunto de pruebas para
 comprobar **Prolog como motor de inferencia independiente de Python**. No se modifica
@@ -145,8 +145,7 @@ py scripts/test_prolog_parity.py
   de prueba de Python normaliza las respuestas y elimina las ramas ocultas.
 - `scripts/test_prolog_parity.py` compara 514 escenarios entre los motores,
   incluidos 500 casos reproducibles. Compara nivel, provisionalidad, reglas activadas y faltantes.
-- El código está preparado para ejecutarse; **no se declara validado hasta obtener
-  el resultado real de SWI-Prolog**. En el entorno de edición no estaba instalado.
+- **Resultado verificado en Google Colab el 23/10/2026:** las 16 pruebas unitarias terminaron con código 0; la comparación de 514 escenarios produjo `OK: paridad Python / Prolog comprobada en 514 escenarios`, también con código 0. Se dispone de salida compartida por el estudiante.
 
 **Punto a revisar con el profesor:** una primera propuesta de pruebas decía
 «gas sin revisión conocida → alto». Las reglas actualmente implementadas en
