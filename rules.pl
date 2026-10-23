@@ -1,7 +1,8 @@
 /*
   ViviendaSeg - Versión Prolog independiente de la base de reglas.
-  Para ejecutarlo se requiere SWI-Prolog (opcional). La web usa el motor
-  Python y no invoca este archivo, para permitir ejecución sin instalar Prolog.
+  Para ejecutarlo se requiere SWI-Prolog (opcional). La web publicada
+  utiliza JavaScript; el servidor local utiliza Python. Esta base Prolog
+  permite una validación independiente sin cambiar la web desplegada.
   Prototipo docente: no utilizar como evaluación real de asegurabilidad.
 */
 :- dynamic dato/2.
@@ -58,6 +59,15 @@ esencial(chimenea) :- dato(calefaccion, combustion).
 faltante(Campo) :- esencial(Campo), (\+ dato(Campo, _) ; dato(Campo, unknown)).
 faltante(informe_madera) :- estructura_con_madera, dato(informe_madera, sin_informe).
 
+% Interfaz pública comparable con engine.py (tras normalizar datos en Python).
+% La clasificación queda fuera de alcance para alquileres y locales.
+evaluacion(excluded, null, no, [], []) :-
+    (dato(uso, alquilada) ; dato(uso, no_residencial)), !.
+evaluacion(incomplete, medio, si, [], [uso]) :-
+    (\+ dato(uso, _) ; dato(uso, unknown)), !.
+evaluacion(ok, Nivel, Provisional, Reglas, Faltantes) :-
+    resultado(Nivel, Provisional, Reglas, Faltantes).
+
 % La prioridad es alto > medio; el nivel medio es provisional cuando faltan
 % respuestas, a no ser que ya exista un riesgo alto confirmado.
 resultado(alto, no, Reglas, Faltantes) :-
@@ -74,8 +84,8 @@ hallazgos(Reglas, Faltantes) :-
     findall(C, faltante(C), M), sort(M, Faltantes).
 
 imprimir_resultado :-
-    resultado(Nivel, Provisional, Reglas, Faltantes),
-    format('Nivel: ~w, provisional: ~w~n', [Nivel, Provisional]),
+    evaluacion(Estado, Nivel, Provisional, Reglas, Faltantes),
+    format('Estado: ~w, nivel: ~w, provisional: ~w~n', [Estado, Nivel, Provisional]),
     format('Reglas: ~w~n', [Reglas]),
     format('Faltantes: ~w~n', [Faltantes]).
 
