@@ -11,9 +11,10 @@ public/                  HTML, CSS y JavaScript del cuestionario
 functions/api/           API de Cloudflare Pages Functions (JavaScript)
 functions/_shared/       Motor JS y copia generada de la base de conocimiento
 knowledge.json           Fuente de verdad de preguntas y reglas
-engine.py                Motor Python para uso local y comparación académica
-app.py                   Servidor local Python opcional
-rules.pl                 Representación educativa independiente en Prolog
+engine.py                Motor Python de referencia y comparación académica
+prolog_engine.py         Adaptador Python -> Prolog -> respuesta web
+app.py                   Servidor HTTP local con inferencia Prolog
+rules.pl                 Base de reglas del motor Prolog
 tests/                   Tests Python y JS
 scripts/                 Sincronización y verificación de paridad Python ↔ JS
 docs/                    Capturas y resumen de la versión anterior
@@ -61,15 +62,20 @@ Si Git requiere autenticación, sigue el inicio de sesión de GitHub. No compart
 
 Cada nuevo commit en `main` desencadenará un despliegue de Pages, si mantienes activado el despliegue automático.
 
-## Usar localmente sin instalar Prolog
+## Ejecutar el cuestionario local con Python y Prolog
 
-PowerShell, desde la carpeta del proyecto:
+La **web pública de Cloudflare utiliza JavaScript**, pero el servidor local usa la ruta real **HTML/JS → API Python → SWI-Prolog → Python → HTML/JS**. Se requiere Python 3.9+ y [SWI-Prolog](https://www.swi-prolog.org/download/stable) instalado, con el comando `swipl` disponible en PATH.
+
+PowerShell, desde la raíz del proyecto:
 
 ```powershell
+swipl --version
 py app.py
 ```
 
-Visita http://127.0.0.1:8000/. También puedes ejecutar `INICIAR_WINDOWS.bat`.
+Visita http://127.0.0.1:8000/. El servidor atiende `/api/schema` y `/api/evaluate`; este último valida respuestas con `engine.validate_and_normalize`, consulta `scripts/prolog_json.pl` y enriquece el resultado usando `knowledge.json`.
+
+**Nota sobre Google Colab:** la prueba visual se realizó mediante un iframe temporal y exigió quitar localmente `frame-ancestors 'none'`; esa excepción **no se incluye en este repositorio**. La cabecera de seguridad permanece intacta en `app.py`.
 
 ## Pruebas
 

@@ -3,7 +3,8 @@ import json
 from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 from pathlib import Path
 from urllib.parse import urlsplit
-from engine import KB, evaluate
+from engine import KB
+from prolog_engine import evaluate
 
 ROOT = Path(__file__).resolve().parent
 STATIC = ROOT / 'public'
