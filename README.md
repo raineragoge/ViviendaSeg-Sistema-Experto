@@ -147,9 +147,3 @@ py scripts/test_prolog_parity.py
   incluidos 500 casos reproducibles. Compara nivel, provisionalidad, reglas activadas y faltantes.
 - **Resultado verificado en Google Colab el 23/10/2026:** las 16 pruebas unitarias terminaron con código 0; la comparación de 514 escenarios produjo `OK: paridad Python / Prolog comprobada en 514 escenarios`, también con código 0. Se dispone de salida compartida por el estudiante.
 
-**Punto a revisar con el profesor:** una primera propuesta de pruebas decía
-«gas sin revisión conocida → alto». Las reglas actualmente implementadas en
-Python, JS y Prolog clasifican «mantenimiento pendiente» como medio y «no lo sé»
-como medio provisional; solo la fuga declarada activa alto (R04). No se ha
-modificado este criterio sin revisar el diseño. Del mismo modo, la regla
-antigua de «madera siempre alto» quedó sustituida por la comprobación documental.
